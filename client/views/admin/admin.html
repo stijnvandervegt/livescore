@@ -1,18 +1,28 @@
 <template name="admin">
-
-	<div class="container">
-		<div class="row">
-			<h2>Mijn wedstrijden</h2>
-			<div class="list-group">
-				 <a href="#" class="list-group-item disabled">
-				    Cras justo odio
-				  </a>
-				 <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
-				 <a href="#" class="list-group-item">Morbi leo risus</a>
-				 <a href="#" class="list-group-item">Porta ac consectetur ac</a>
-				 <a href="#" class="list-group-item">Vestibulum at eros</a>
-			</div>
-		</div>
-	</div>
+    {{#if currentUser}}
+        <div class="container">
+            <div class="row">
+                <div class="clearfix">
+                    <div class="pull-left">
+                        <h2>Mijn wedstrijden</h2>
+                    </div>
+                    <div class="pull-right">
+                        <a href="/admin/wedstrijd/" role="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span> Wedstrijd aamaken</a>
+                    </div>
+                </div>
+                <div class="list-group">
+                     <a href="#" class="list-group-item disabled">
+                        Cras justo odio
+                      </a>
+                     <a href="#" class="list-group-item">Dapibus ac facilisis in</a>
+                     <a href="#" class="list-group-item">Morbi leo risus</a>
+                     <a href="#" class="list-group-item">Porta ac consectetur ac</a>
+                     <a href="#" class="list-group-item">Vestibulum at eros</a>
+                </div>
+            </div>
+        </div>
+    {{ else }}
+       {{ > loginButtons }}
+    {{/if}}
 
 </template>
