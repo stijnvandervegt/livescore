@@ -1,5 +1,6 @@
+
 Template.addGame.helpers({
-    homePlayers: function() {
+   /* homePlayers: function() {
         Players.insert(
             {
                 name: '',
@@ -18,7 +19,15 @@ Template.addGame.helpers({
             }
         );
         return Players.find({game_id: Session.get('gameId'), team: 'away'});
-    }
+    }*/
+    players: function() {        
+        Meteor.subscribe('addPlayer', {team: 'home', game_id: this._id});
+        Meteor.subscribe('addPlayer', {team: 'away', game_id: this._id});
+        Meteor.subscribe('getGamePlayers', this._id);
+        return 'hier komen spelers';
+        //return Meteor.subscribe('getGamePlayers', this._id);
+
+    }    
 });
 
 Template.addGame.events({
