@@ -2,6 +2,10 @@ Meteor.publish("getGames", function () {
 	return Games.find({status: 'publish'});
 });
 
+Meteor.publish('userGames', function() {
+	return Games.find({user_id: Meteor.user()._id});
+});
+
 Meteor.methods({
 	addGame: function(data) {
 		if(data === false) {
@@ -11,7 +15,7 @@ Meteor.methods({
 				away_team: '',
 				date: '',
 				time: '',
-				user_id: Meteor.user(),
+				
 				status: 'draft'
 			};
 		}
@@ -19,6 +23,8 @@ Meteor.methods({
 		return Games.insert(data);
 	},
 	updateGame: function(data) {
+		data.user_id = Meteor.user()._id;
 		return Games.update(data._id, data);
 	}
 });
+

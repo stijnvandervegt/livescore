@@ -16,10 +16,16 @@ Template.addGame.events({
         Meteor.subscribe('addPlayer', {team: event.currentTarget.getAttribute('data-team'), game_id: Session.get('gameId')});              
         return false;
     },
-    'click .removePlayer': function(event) {
-        console.log(this._id);        
+    'click .removePlayer': function(event) {               
         Meteor.subscribe('removePlayer', {player_id: this._id});
         return false;
+    },
+    'change input.player': function(event) {
+        var data = {};
+        data._id = this._id;        
+        data.name = event.currentTarget.value;                
+        console.log(data);
+        Meteor.call('updatePlayer', data);
     },
     'submit form': function(event) {
         
@@ -27,7 +33,7 @@ Template.addGame.events({
             _id: Session.get('gameId'),
             name: event.target.name.value,
             home_team: event.target.teamHome.value,
-            home_team: event.target.teamAway.value,
+            away_team: event.target.teamAway.value,
             date: event.target.date.value,
             time: event.target.time.value,
             status: 'publish'

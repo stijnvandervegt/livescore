@@ -18,4 +18,10 @@ Meteor.publish('addPlayer', function(options) {
 
 Meteor.publish('removePlayer', function(options) {
 	Players.remove(options.player_id);
-})
+});
+
+Meteor.methods({
+    updatePlayer: function(data) {        
+        return Players.update(data._id, {$set: {'name': data.name}});
+    }
+});

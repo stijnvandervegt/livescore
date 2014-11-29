@@ -1,6 +1,7 @@
 Template.admin.helpers({
-    games: function() {
-        console.log(this.user());
-        return Games.find({user_id: this.user()._id});
+    games: function() {        
+        Meteor.subscribe('userGames');   
+        console.log(Meteor.user()._id);     
+        return Games.find({user_id: Meteor.user()._id});
     }
 });
