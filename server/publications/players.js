@@ -3,19 +3,10 @@ Meteor.publish("getplayersByTeam", function (options) {
 });
 
 Meteor.publish('getGamePlayers', function(game_id) {
-
-	var players = {
-		home: Players.find({team: 'home', game_id: game_id}).fetch(),
-		away: Players.find({team: 'away', game_id: game_id}).fetch()
-	}; 
-	
-	//return true;
-	//return players;
-
+	return Players.find({game_id: game_id});	
 });
 
 Meteor.publish('addPlayer', function(options) {
-	
 	Players.insert(
         {
             name: '',
@@ -23,7 +14,8 @@ Meteor.publish('addPlayer', function(options) {
             team: options.team
         }
     );
-
-    //return true;
-
 });
+
+Meteor.publish('removePlayer', function(options) {
+	Players.remove(options.player_id);
+})

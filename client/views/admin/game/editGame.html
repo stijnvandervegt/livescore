@@ -1,0 +1,20 @@
+<template name="editGame">
+	<div class="container">
+        <div class="row">
+            <h1>{{game.name}}</h1>
+            {{game.home_team}}
+			{{game.away_team}}
+			{{game.date}}
+			{{game.time}}
+		</div>
+	</div>	
+	<div class="row">
+		  <div class="col-md-6">
+			  	{{#each players.home}}
+
+			  	{{/each}}
+		  </div>
+	</div>
+
+
+</template>

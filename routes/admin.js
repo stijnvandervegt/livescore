@@ -3,11 +3,17 @@ Router.route('/admin/', function() {
     this.render('admin');
 });
 Router.route('/admin/wedstrijd', function() {
-    // Add game
+    // Add game    
+    Meteor.call('addGame', false, function(error, result) {
+    	Session.set('gameId', result);
+    });
+    
+    // render template
     this.render('addGame');
+
 });
 Router.route('/admin/wedstrijd/:gameId', function() {
     // Edit game and add scores etc.
-    this.render('admin');
+    this.render('editGame',  {data: this.params.gameId});
 });
 
