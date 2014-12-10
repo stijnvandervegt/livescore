@@ -1,1 +1,0 @@
-Games = new Mongo.Collection('game');

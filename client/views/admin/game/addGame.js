@@ -26,7 +26,7 @@ Template.addGame.events({
         data.name = event.currentTarget.value;                
         console.log(data);
         Meteor.call('updatePlayer', data);
-    },
+    },    
     'submit form': function(event) {
         
         var data = {

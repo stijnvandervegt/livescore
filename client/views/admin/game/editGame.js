@@ -1,6 +1,8 @@
 Template.editGame.helpers({
-    game: function() {       
+    game: function() {               
         Session.set('game', Games.findOne({_id: this.toString()}));     
+        
+        Meteor.subscribe('GameData', this.toString());
         return Session.get('game');
     },
     players: function() {               
@@ -11,10 +13,16 @@ Template.editGame.helpers({
         };         
     },
     event: function() {       
+        console.log('event');
         return Session.get('addEvent');
     },
     score: function() {
-        return Session.get('addScore');
+        var homeScore = GameData.find({game_id: this.toString(), team: 'home'});
+        var awayScore = GameData.find({game_id: this.toString(), team: 'away'});
+        var score = homeScore.count()  +' - '+ awayScore.count();
+        Session.set('score', score);
+        
+        return Session.get('score');
     }    
 });
 
@@ -38,14 +46,11 @@ Template.editGame.events({
         jQuery(event.currentTarget).closest('td').find('.text').toggleClass('hidden');
         jQuery(event.currentTarget).closest('td').find('input').toggleClass('hidden');
     },
-    'click .player .panel-heading': function(event) {        
-        // get player id 
-        //show hide event       
+    'click .player .panel-heading': function(event) {                 
         jQuery(event.currentTarget).closest('.player').find('.event').toggleClass('hidden');
         
     },
-    'click .score': function(event) {
-        
+    'click .score': function(event) {        
        jQuery(event.currentTarget).closest('.player').find('.addScore').toggleClass('hidden');
     }
 });

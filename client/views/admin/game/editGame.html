@@ -43,7 +43,7 @@
 		</div>
 		<div class="row">
 			<div class="block-center col-md-4">
-				stand
+				stand {{score}} 
 			</div>
 		</div>
 		<div class="row">
@@ -59,6 +59,34 @@
 		  		
 		  		
 				{{#each players.home}}		
+				<div class="col-sm-6 ">
+			  		<div class="panel panel-primary player">	  		
+			  			<div class="panel-heading clearfix">
+			  				<span class="pull-left">{{name}}</span>
+			  				<button class="pull-right btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+			  				<button class="pull-right btn btn-xs btn-info"><span class="glyphicon glyphicon-pencil"></span></button>
+
+			  			</div>
+
+				  			{{> addEvent}}
+				  		
+				  			{{> addScore}}
+				  		
+			  		</div>
+			  	</div>
+
+		  		{{/each}}
+
+
+				<div class="form-group">
+			  		<div class="col-sm-10">
+			  			<h3>{{game.away_team}}</h3>
+			  		</div>
+			  		<div class="col-sm-2">
+	                    <button class="addPlayer btn  btn-success" data-team="home"><span class="glyphicon glyphicon-plus"></span></button>
+	                </div>
+		  		</div>
+		  		{{#each players.away}}		
 				<div class="col-sm-6 ">
 			  		<div class="panel panel-primary player">	  		
 			  			<div class="panel-heading clearfix">

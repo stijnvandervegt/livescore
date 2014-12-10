@@ -25,6 +25,7 @@ Meteor.methods({
 	updateGame: function(data) {
 		data.user_id = Meteor.user()._id;
 		return Games.update(data._id, data);
-	}
+	}	
 });
+
 

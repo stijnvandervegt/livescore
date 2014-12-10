@@ -2,7 +2,7 @@ Router.route('/', function () {
   	this.render('home');  
 });
 
-Router.route('/wedstrijd/:gameSlug', function() {
-    this.render('game', {data: this.params.gameSlug});
+Router.route('/wedstrijd/:game_id', function() {
+    this.render('game', {data: this.params.game_id});
 });
 
