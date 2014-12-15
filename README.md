@@ -2,16 +2,12 @@ livescore
 =========
 
 To Do:
-Goede debug tool vinden voor server side.
-Toevoegen wedstrijd en spelers met feedback naar de gebruiker
-Games aan gebruikers koppelen 
-Overzicht van wedstrijden laten zien die aangemaakt zijn door de gebruiker.
+Voorkant wedstrijd pagina laten zien met stats en charts.
+Edit games in aangemaakte wedstrijd afmaken.
+Bootstrap styling goedzetten.
+Omzetten naar android applicatie voor tablet.
+Restricties inbouwen voor het communiceren met database via de client-side
 
-
-Best practice
-* Gebruik camelCase
-* Gebruik Firstupper for Collections
-* Data columns in collections met under_score
 
 Folder structure from meteor-boilerplate
 https://github.com/matteodem/meteor-boilerplate
