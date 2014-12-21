@@ -1,8 +1,28 @@
-<template name="game">
+<template name="game">	
     <div class="container">
-        <h1>{{game.name}}</h1>
-        {{score.homeTotal}} - {{score.awayTotal}}
-
-        <div class="chart"></div>
+    	<div class="row">
+	    	<div class="bg-primary col-md-4 col-md-offset-4">
+	        	<h1 class="text-center">{{game.name}}</h1>
+	        	<div class="text-center">
+	        		<h2>{{score.homeTotal}} - {{score.awayTotal}}</h2>
+	        	</div>
+        	</div>
+        </div>
+		<div class="row">
+			<div class="jumbotron clearfix">
+				<h2>Score</h2>
+				<div class="col-md-12">
+		        	{{players}}
+		        </div>
+	        </div>
+        </div>
+        <div class="row">
+	        <div class="jumbotron">
+				<h2>Score per speler</h2>
+				<div class="col-md-12">
+		        	<div class="chartAway chart"></div>
+		        </div>
+	    	</div>
+        </div>
     </div>
 </template>
