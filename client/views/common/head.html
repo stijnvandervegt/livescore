@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />    
 
     <style>
-    .chart div {
+    #graph div {
 	  font: 10px sans-serif;
 	  background-color: steelblue;
 	  text-align: right;
@@ -11,5 +11,33 @@
 	  margin: 1px;
 	  color: white;
 	}
+
     </style>
+
+    <style>
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: brown;
+}
+
+.axis {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+</style>
 </head>

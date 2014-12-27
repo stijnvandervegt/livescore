@@ -3,10 +3,7 @@ Meteor.subscribe("getGamePlayers", this);
 Template.game.helpers({
     game: function() {
        
-        Session.set('scores', this.scores.fetch()); 
-        
-
-             
+        Session.set('scores', this.scores.fetch());             
         Session.set('gameId', this.id);    	
         return Games.findOne({_id: this.id});
     },
@@ -33,7 +30,7 @@ Template.game.helpers({
     		away: awayScore.fetch()
     	}
     },
-    players: function() {
+    players: function() {        
          // Get score by player
         var scores =  Players.find({
             game_id: Session.get('gameId')            
@@ -43,35 +40,11 @@ Template.game.helpers({
                 player.scores = scores.fetch();
                 return player;
             }
-        });
-        Session.set('scores', scores.fetch());
+        });    
        
-        return scores;        
+        return scores;    
     }
 });
 
 
-Template.game.rendered = function () {
-	Meteor.subscribe("GameData");
-    Meteor.subscribe("getGamePlayers", Session.get('gameId'));
-	var data = [4, 8, 15, 16, 23, 42];
-
-    var data = {
-        home: [{name: 'Rick Voorneveld', score: 4}, {name: 'Tim Bakker', score: 8}],        
-        away: [{name: 'Rick Voorneveld', score: 4}, {name: 'Tim Bakker', score: 8}]        
-    }
-    
-    console.log(Session.get('scores'));
-
-	var x = d3.scale.linear()
-    	.domain([0, d3.max(data.away)])
-    	.range([0, 420]);
-
-	d3.select(".chartAway")
-  		.selectAll("div")
-    		.data(data.away)
-  		.enter()
-        .append("div")
-    	.style("width", function(d) { return (d.score * 40) + "px"; })
-    	.text(function(d) { return d.name; });	  
-};
+	
