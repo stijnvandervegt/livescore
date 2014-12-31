@@ -3,7 +3,7 @@ Meteor.subscribe("getGamePlayers", this);
 Template.game.helpers({
     game: function() {
        
-        Session.set('scores', this.scores.fetch());             
+        //Session.set('scores', this.scores.fetch());             
         Session.set('gameId', this.id);    	
         return Games.findOne({_id: this.id});
     },
@@ -29,20 +29,6 @@ Template.game.helpers({
     		awayTotal: awayScore.count(),
     		away: awayScore.fetch()
     	}
-    },
-    players: function() {        
-         // Get score by player
-        var scores =  Players.find({
-            game_id: Session.get('gameId')            
-        }, {
-            transform: function(player) {
-                var scores = GameData.find({game_id: Session.get('gameId'), player_id: player._id});
-                player.scores = scores.fetch();
-                return player;
-            }
-        });    
-       
-        return scores;    
     }
 });
 

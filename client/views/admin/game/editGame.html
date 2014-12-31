@@ -9,7 +9,7 @@
 			            	<td>Thuisspelend team: </td>
 			            	<td>
 			            	<span class="text">{{game.home_team}}</span> 
-			            	<input type="text" class="hidden" name="home_team" value="{{game.home_team}}"> 
+			            	<input type="text" class="hidden info" name="home_team" value="{{game.home_team}}"> 
 			            	<a href="" class="editField pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
 			            	</td>
 			            </tr>
@@ -17,7 +17,7 @@
 			            	<td>Uitspelend team: </td>
 			            	<td>
 				            	<span class="text">{{game.away_team}}</span> 		
-				            	<input type="text" class="hidden" name="away_team" value="{{game.away_team}}"> 
+				            	<input type="text" class="hidden info" name="away_team" value="{{game.away_team}}"> 
 				            	<a href="" class="editField pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
 			            	</td>
 			            </tr>
@@ -25,7 +25,7 @@
 			            	<td>Datum: </td>
 			            	<td>
 				            	<span class="text">{{game.date}}</span>  
-				            	<input type="text" class="hidden" name="date" value="{{game.date}}"> 
+				            	<input type="text" class="hidden info" name="date" value="{{game.date}}"> 
 				            	<a href="" class="editField pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
 			            	</td>
 			            </tr>
@@ -33,7 +33,7 @@
 			            	<td>Start: </td>
 			            	<td>
 			            		<span class="text">{{game.time}}</span>  
-			            		<input type="text" class="hidden" name="time" value="{{game.time}}"> 
+			            		<input type="text" class="hidden info" name="time" value="{{game.time}}"> 
 			            		<a href="" class="editField pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
 			            	</td>
 			            </tr>					
@@ -62,7 +62,8 @@
 				<div class="col-sm-6 ">
 			  		<div class="panel panel-primary player">	  		
 			  			<div class="panel-heading clearfix">
-			  				<span class="pull-left">{{name}}</span>
+			  				<span class="pull-left name">{{name}}</span>
+			  				<input type="text" class="hidden player bg-primary" name="time" value="{{name}}"> 
 			  				<button class="pull-right btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
 			  				<button class="pull-right btn btn-xs btn-info"><span class="glyphicon glyphicon-pencil"></span></button>
 
@@ -77,22 +78,28 @@
 
 		  		{{/each}}
 
-
+		  	</div>
+		  	<div class="col-md-6">
 				<div class="form-group">
 			  		<div class="col-sm-10">
 			  			<h3>{{game.away_team}}</h3>
 			  		</div>
 			  		<div class="col-sm-2">
-	                    <button class="addPlayer btn  btn-success" data-team="home"><span class="glyphicon glyphicon-plus"></span></button>
+	                    <button class="addPlayer btn  btn-success" data-team="away"><span class="glyphicon glyphicon-plus"></span></button>
 	                </div>
 		  		</div>
 		  		{{#each players.away}}		
 				<div class="col-sm-6 ">
 			  		<div class="panel panel-primary player">	  		
 			  			<div class="panel-heading clearfix">
-			  				<span class="pull-left">{{name}}</span>
-			  				<button class="pull-right btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
-			  				<button class="pull-right btn btn-xs btn-info"><span class="glyphicon glyphicon-pencil"></span></button>
+			  				
+				  				<span class="pull-left name">{{name}}</span>
+				  				<input type="text" class="hidden player bg-primary" name="time" value="{{name}}"> 
+			  				
+			  				
+				  				<button class="pull-right btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
+				  				<button class="pull-right btn btn-xs btn-info"><span class="glyphicon glyphicon-pencil"></span></button>
+			  				
 
 			  			</div>
 

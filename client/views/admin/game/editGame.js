@@ -12,8 +12,7 @@ Template.editGame.helpers({
             away: Players.find({team: 'away', game_id: this.toString()}).fetch()
         };         
     },
-    event: function() {       
-        console.log('event');
+    event: function() {               
         return Session.get('addEvent');
     },
     score: function() {
@@ -35,7 +34,7 @@ Template.editGame.events({
         jQuery(event.currentTarget).closest('td').find('.text').toggleClass('hidden');
         jQuery(event.currentTarget).closest('td').find('input').toggleClass('hidden');
     },
-    'change input': function(event) {
+    'change input.info': function(event) {
         var name = event.currentTarget.name;
         var value = event.currentTarget.value;
         var data = Session.get('game');
@@ -46,11 +45,30 @@ Template.editGame.events({
         jQuery(event.currentTarget).closest('td').find('.text').toggleClass('hidden');
         jQuery(event.currentTarget).closest('td').find('input').toggleClass('hidden');
     },
+    'click .btn-danger': function(event) {            
+        Meteor.subscribe('removePlayer', {player_id: this._id});
+        return false;
+    },
+    'click .btn-info': function(event) {            
+        jQuery(event.currentTarget).closest('.panel-heading').find('.name').toggleClass('hidden');
+        jQuery(event.currentTarget).closest('.panel-heading').find('input').toggleClass('hidden');
+        return false;
+    },
+    'change input.player': function(event) {
+        var name = event.currentTarget.name;
+        var value = event.currentTarget.value;
+        var data = Session.get('game');
+        data.name = value;
+        data._id = this._id;       
+        Meteor.call('updatePlayer', data);
+
+        jQuery(event.currentTarget).closest('.panel-heading').find('.name').toggleClass('hidden');
+        jQuery(event.currentTarget).closest('.panel-heading').find('input').toggleClass('hidden');
+    },
     'click .player .panel-heading': function(event) {                 
-        jQuery(event.currentTarget).closest('.player').find('.event').toggleClass('hidden');
-        
+        jQuery(event.currentTarget).closest('.player').find('.event').toggleClass('hidden');        
     },
     'click .score': function(event) {        
        jQuery(event.currentTarget).closest('.player').find('.addScore').toggleClass('hidden');
-    }
+    }   
 });
