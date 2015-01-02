@@ -1,5 +1,7 @@
 Meteor.subscribe("getGames");
 Meteor.subscribe("getGamePlayers", this);
+
+
 Template.game.helpers({
     game: function() {
        
