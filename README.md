@@ -2,7 +2,6 @@ livescore
 =========
 
 To Do:
-Voorkant wedstrijd pagina laten zien met stats en charts.
 Edit games in aangemaakte wedstrijd afmaken.
 Bootstrap styling goedzetten.
 Omzetten naar android applicatie voor tablet.

@@ -23,5 +23,8 @@ Meteor.publish('removePlayer', function(options) {
 Meteor.methods({
     updatePlayer: function(data) {        
         return Players.update(data._id, {$set: {'name': data.name}});
+    },
+    getPlayer: function(data) {
+        return Players.find({_id: data.player_id}).fetch();
     }
 });
