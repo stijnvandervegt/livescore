@@ -1,33 +1,38 @@
+
+Template.editGame.created = function() {
+    Meteor.subscribe('GameData', this.data.id);
+    Meteor.subscribe('userGames');
+    Meteor.subscribe('getGamePlayers', this.data.id);
+    Session.set('gameId', this.data.id);
+};
+
 Template.editGame.helpers({
-    game: function() {               
-        Session.set('game', Games.findOne({_id: this.toString()}));     
-        
-        Meteor.subscribe('GameData', this.toString());
+    game: function() {
+        Session.set('game', Games.findOne({_id: Session.get('gameId')}));
         return Session.get('game');
     },
     players: function() {               
-        Meteor.subscribe('getGamePlayers', this.toString());
+
         return {
-            home: Players.find({team: 'home', game_id: this.toString()}).fetch(),
-            away: Players.find({team: 'away', game_id: this.toString()}).fetch()
+            home: Players.find({team: 'home', game_id: Session.get('gameId')}).fetch(),
+            away: Players.find({team: 'away', game_id: Session.get('gameId')}).fetch()
         };         
     },
     event: function() {               
         return Session.get('addEvent');
     },
     score: function() {
-        var homeScore = GameData.find({game_id: this.toString(), team: 'home'});
-        var awayScore = GameData.find({game_id: this.toString(), team: 'away'});
+        var homeScore = GameData.find({game_id: Session.get('gameId'), team: 'home'});
+        var awayScore = GameData.find({game_id: Session.get('gameId'), team: 'away'});
         var score = homeScore.count()  +' - '+ awayScore.count();
-        Session.set('score', score);
-        
-        return Session.get('score');
+
+        return score;
     }    
 });
 
 Template.editGame.events({
-    'click .addPlayer': function(event) {        
-        Meteor.subscribe('addPlayer', {team: event.currentTarget.getAttribute('data-team'), game_id: this.toString()});              
+    'click .addPlayer': function(event) {
+        Meteor.call('addPlayer', {team: event.currentTarget.getAttribute('data-team'), game_id: Session.get('gameId')});
         return false;
     },
     'click .editField': function(event) {
@@ -38,15 +43,18 @@ Template.editGame.events({
         var name = event.currentTarget.name;
         var value = event.currentTarget.value;
         var data = Session.get('game');
+
+        data.user_id = Meteor.userId();
         data[name] = value;
-        data._id = this.toString();       
+        data['status'] = 'publish';
+        console.log(data);
         Meteor.call('updateGame', data);
 
         jQuery(event.currentTarget).closest('td').find('.text').toggleClass('hidden');
         jQuery(event.currentTarget).closest('td').find('input').toggleClass('hidden');
     },
     'click .btn-danger': function(event) {            
-        Meteor.subscribe('removePlayer', {player_id: this._id});
+        Meteor.call('removePlayer', {player_id: this._id});
         return false;
     },
     'click .btn-info': function(event) {            

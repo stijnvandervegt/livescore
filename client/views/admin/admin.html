@@ -12,7 +12,11 @@
                 </div>
                 <div class="list-group">
                      {{#each games}}
-                        <a href="/admin/wedstrijd/{{_id}}" class="list-group-item">{{name}}</a>
+                        <div class="list-group-item clearfix">
+                            <a href="/admin/wedstrijd/{{_id}}" class="">{{name}}</a>
+                            <a href="" class="btn btn-danger removeGame pull-right"><span class="glyphicon glyphicon-trash"></span></a>
+                        </div>
+
                      {{/each}}                     
                 </div>
             </div>

@@ -1,4 +1,4 @@
-livescore
+livescore || ls
 =========
 
 To Do:
@@ -13,3 +13,21 @@ https://github.com/matteodem/meteor-boilerplate
 
 Source:
 Book: Discover Meteor
+Web: http://meteor.com
+
+Collections / Namespaces / Global variables / local variables
+Collection: CollectionName
+
+Global variables: without var
+Local variables: with var
+
+
+Template.created = This callback is called before your template's logic is evaluated for the first time.
+
+
+Latency compensation:
+Call
+Method
+Methods stub
+
+

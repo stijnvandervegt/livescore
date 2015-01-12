@@ -1,6 +1,9 @@
-Template.addGame.helpers({    
-    players: function() {        
-        Meteor.subscribe('getGamePlayers', Session.get('gameId'));
+Template.addGame.created = function() {
+    Meteor.subscribe('getGamePlayers', Session.get('gameId'));
+}
+
+Template.addGame.helpers({
+    players: function() {
         return {
             home: Players.find({team: 'home', game_id: Session.get('gameId')}).fetch(),
             away: Players.find({team: 'away', game_id: Session.get('gameId')}).fetch()
@@ -13,18 +16,17 @@ Template.addGame.helpers({
 
 Template.addGame.events({
     'click .addPlayer': function(event) {        
-        Meteor.subscribe('addPlayer', {team: event.currentTarget.getAttribute('data-team'), game_id: Session.get('gameId')});              
+        Meteor.call('addPlayer', {team: event.currentTarget.getAttribute('data-team'), game_id: Session.get('gameId')});
         return false;
     },
     'click .removePlayer': function(event) {               
-        Meteor.subscribe('removePlayer', {player_id: this._id});
+        Meteor.call('removePlayer', {player_id: this._id});
         return false;
     },
     'change input.player': function(event) {
         var data = {};
         data._id = this._id;        
-        data.name = event.currentTarget.value;                
-        console.log(data);
+        data.name = event.currentTarget.value;
         Meteor.call('updatePlayer', data);
     },    
     'submit form': function(event) {
@@ -35,12 +37,12 @@ Template.addGame.events({
             home_team: event.target.teamHome.value,
             away_team: event.target.teamAway.value,
             date: event.target.date.value,
+            user_id: Meteor.userId(),
             time: event.target.time.value,
-            status: 'publish'
+            status: 'publish'            
         };
         
         // Validate data
-        
         Meteor.call('updateGame', data, function(error, result) {
                     
             event.target.setAttribute('action', '/admin/wedstrijd/'+Session.get('gameId'));

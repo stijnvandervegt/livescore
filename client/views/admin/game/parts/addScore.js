@@ -1,8 +1,7 @@
 
 Template.addScore.events({
-	'click a': function(event) {				
-		console.log(jQuery(event.currentTarget).data('type'));
-		console.log(this._id);
+	'click a': function(event) {
+
 		var data = {
 			player: this, 
 			type: jQuery(event.currentTarget).data('type')

@@ -4,8 +4,16 @@
         	<div class="panel panel-primary">
         		<div class="panel-heading">{{game.name}}</div>
         		<div class="panel-body">
-	        		<table class="table">	            	
-			            <tr>
+	        		<table class="table">
+                        <tr>
+                            <td>Naam: </td>
+                            <td>
+                                <span class="text">{{game.name}}</span>
+                                <input type="text" class="hidden info" name="name" value="{{game.name}}">
+                                <a href="" class="editField pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
+                            </td>
+                        </tr>
+                        <tr>
 			            	<td>Thuisspelend team: </td>
 			            	<td>
 			            	<span class="text">{{game.home_team}}</span> 
@@ -36,7 +44,13 @@
 			            		<input type="text" class="hidden info" name="time" value="{{game.time}}"> 
 			            		<a href="" class="editField pull-right"><span class="glyphicon glyphicon-pencil"></span></a>
 			            	</td>
-			            </tr>					
+			            </tr>
+                        <tr>
+                            <td>status: </td>
+                            <td>
+                                <span class="text">{{game.status}}</span>
+                            </td>
+                        </tr>
 					</table>
 				</div>
 			</div>

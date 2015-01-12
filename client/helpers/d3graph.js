@@ -1,4 +1,3 @@
-_.defer(function() {
 
 	playerGraph = {			
 		svg: '',
@@ -13,8 +12,27 @@ _.defer(function() {
             	.selectAll('text')
             	.data(data);
 		},
+		update: function(el, child, data) {
+			this.init(el, child, data);
+			this.draw();
+		},
 		draw: function() {
-			 this.bars = this.path
+			// Update bars
+			this.bars = this.updateLine(this.path);
+
+			// Add new bars
+            this.path
+            	.enter()
+                .append('rect');
+
+            this.path = this.updateLine(this.path);
+
+            this.path.exit().remove();
+            this.drawText();
+          
+		},
+		updateLine: function(path) {
+			path
                 .attr("class", "bar")
                 .attr('data-player', function(d) {return d.player_id})
                 .transition()
@@ -23,139 +41,126 @@ _.defer(function() {
                 .attr("x", 0)
                 .attr("y", function(d, i) { return i * 25 })
                 .attr("fill", "blue");
-            
-            this.path
-            	.enter()
-                .append('rect')
-                .attr("class", "bar")
-                .attr('data-player', function(d) {return d.player_id})
-                .transition()
-                    .attr("width", function(d) { return (d.score * 40) ; })
-                .attr("height", 20)
-                .attr("x", 0)
-                .attr("y", function(d, i) { return i * 25 })
-                .attr("fill", "blue");
 
-
-            this.path.exit().remove();
-          
+            return path;
 		},
 		drawText: function() {
-			this.text = this.pathText
+			// Update text
+			this.text = this.updateText(this.pathText);
+            
+            // Add new text
+            this.pathText
+            	.enter()
+                .append("text");
+
+            this.pathText = this.updateText(this.pathText);
+            
+            this.pathText.exit().remove();
+		},
+		updateText: function(path) {
+			path
                 .attr("x", 15)
                 .attr("font-size", "16px")
                 .attr("y", function(d, i) { return ((i + 1) * 25) - 11})
                 .text(function(d) { return d.name +' - '+ d.score ; })
                 .attr("fill", "white");
-            
-            this.pathText
-            	.enter()
-                .append("text")
-                .attr("x", 15)
-                .attr("font-size", "16px")
-                .attr("y", function(d, i) { return ((i + 1) * 25) - 11})
-                .text(function(d) { return d.name +' - '+ d.score ; })
-                .attr("fill", "white")
-                .on("click", function(d){
-                    console.log(d);
-                });
-
-              this.pathText.exit().remove();
+            return path;
 		}
+
 	};
 
-	pieGraph = {
-		init: function(el, child, data) {
-			// Pie
-            var width = 300,
-                height = 300,
-                radius = Math.min(width, height) / 2,
-                labelr = radius + 10;
+	PieGraph = function (el, child, width, height) {
+		this.el = el;
+		this.child = child;
+		this.width = width;
+		this.height = height;
 
-            var color = d3.scale.ordinal()
-                .range(["#d0743c", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#98abc5", "#ff8c00"]);
+		this.svgPie = d3.select(el)
+            .attr("width", width + 200)
+            .attr("height", height + 60)
+            .append("g")
+            .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+            
+	};
 
-            var arc = d3.svg.arc()
-                .outerRadius(radius - 10)
+	PieGraph.prototype = {		
+		radius: 0,
+		labelr: 0,
+		color:  d3.scale.ordinal().range(["#d0743c", "#8a89a6", "#ff8c00", "#98abc5", "#a05d56", "#98abc5", "#ff8c00"]),			
+		init: function(data) {		
+			
+			this.radius = (Math.min(this.width, this.height) / 2);
+			this.labelr = (this.radius + 10);
+			
+            this.arc = d3.svg.arc()
+                .outerRadius(this.radius - 10)
                 .innerRadius(0);
 
-            var pie = d3.layout.pie()
+            this.pie = d3.layout.pie()
                 .sort(null)
                 .value(function(d) { return d.score; });
+		     
+		    this.draw(data);   
 
-            if(! this.svgPie) {
-            	this.svgPie = d3.select("#pie")
-	                .attr("width", width + 200)
-	                .attr("height", height + 60)
-	                .append("g")
-	                .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+		},		
+		draw: function(data) {
 
-	                data.forEach(function(d) {                    
-	                    d.score = +d.score;
-	                });
-            }
+			var self = this;
 
-            var path = this.svgPie
+			data.forEach(function(d) {                    
+                d.score = +d.score;
+            });           
+            this.path = this.svgPie
  					.selectAll("path")
-                    .data(pie(data)); 
+                    .data(this.pie(data)); 
 
-            var text = this.svgPie
+            this.text = this.svgPie
 				.selectAll("text")
-                .data(pie(data)); 
+                .data(this.pie(data)); 
 
-			var pathsUpdate = path
-				.attr('fill', function(d, i) { return color(i) })
-        		.attr('d', arc)
-        		.each(function(d) { this._current = d; });
+			var pathsUpdate = this.updatePath();
 
-            var paths = path
+           	this.path
             	.enter()
-            	.append('path')
-            		.attr('fill', function(d, i) { return color(i) })
-            		.attr('d', arc)
-            		.each(function(d) { this._current = d; });
+            	.append('path');
+
+            var paths = this.updatePath();
+            		
 
            	           	
-    		path.data(pie(data));
+    		this.path.data(this.pie(data));
 
-    		path.transition().duration(750).attrTween("d", arcTween);
+    		this.path.transition().duration(750).attrTween("d", arcTween);
     		function arcTween(a) {
 			  var i = d3.interpolate(this._current, a);
 			  this._current = i(0);
 			  return function(t) {
-			    return arc(i(t));
+			    return self.arc(i(t));
 			  };
 			}
 
- 			var textUpdate = text
- 				.attr("transform", function(d) {
-		            var c = arc.centroid(d),
-		                x = c[0],
-		                y = c[1],
-		            // pythagorean theorem for hypotenuse
-		                h = Math.sqrt(x*x + y*y);
-		            return "translate(" + (x/h * labelr) +  ',' +
-		            (y/h * labelr) +  ")";
-		        })
-		        .attr("dy", ".35em")
-		        .style("text-anchor", function(d) {
-		            // are we past the center?
-		            return (d.endAngle + d.startAngle)/2 > Math.PI ?
-		                "end" : "start";
-		        })
-		        .text(function(d) { return d.data.name; })
+ 			var textUpdate = this.updateText();
 
-			var text = text
+			this.text
 				.enter()
-                .append("text")
-		        .attr("transform", function(d) {
-		            var c = arc.centroid(d),
+                .append("text");
+
+		    var text = this.updateText();
+
+		},
+		updateText: function() {
+			
+			var self = this;
+
+			this.text
+ 				.attr("transform", function(d) {
+		            var c = self.arc.centroid(d),
 		                x = c[0],
 		                y = c[1],
 		            // pythagorean theorem for hypotenuse
 		                h = Math.sqrt(x*x + y*y);
-		            return "translate(" + (x/h * labelr) +  ',' +
-		            (y/h * labelr) +  ")";
+		            return "translate(" + (x/h * self.labelr) +  ',' +
+		            (y/h * self.labelr) +  ")";
 		        })
 		        .attr("dy", ".35em")
 		        .style("text-anchor", function(d) {
@@ -165,15 +170,22 @@ _.defer(function() {
 		        })
 		        .text(function(d) { return d.data.name; });
 
-			        
+		    return this.text;
+
 		},
-		draw: function() {
+		updatePath: function() {
 			
-		},
-		drawText: function() {
-			
-		}	
-	}
-	
-}); 
+			var self = this;
+
+			this.path
+				.attr('fill', function(d, i) { return self.color(i) })
+        		.attr('d', this.arc)
+        		.each(function(d) { this._current = d; });	
+
+        	return this.path;
+
+		}
+		
+	};
+
 

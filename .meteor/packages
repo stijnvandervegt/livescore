@@ -4,7 +4,6 @@
 # but you can also edit it by hand.
 
 meteor-platform
-insecure
 iron:router
 accounts-password
 accounts-twitter
@@ -14,7 +13,4 @@ ian:accounts-ui-bootstrap-3
 superstringsoft:observatory
 broth:inspector
 d3
-raix:cordova
-richsilv:cordova-notifications
-mystor:device-detection
-
+less

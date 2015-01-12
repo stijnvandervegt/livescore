@@ -1,138 +1,69 @@
-Meteor.subscribe("getGamePlayers", Session.get('gameId'));
-
 Template.scoreGraph.created = function() {
-	
-var score = GameData.find().observe({
-	added: function(post) {
-		update();
-	}	
-});
-
-var update = function() {
-	 var score = GameData.find({},{
-	        transform: function(score) {
-	        	console.log(score.player_id);
-	            var player = Players.find({_id: score.player_id}).fetch();
-	            
-	          	setTimeout(function() {
-	          		console.log(player);
-	          		score.playerName = player[0].name;
-	          		score.player_id = player[0]._id;                			                      	            
-					return score;
-	          	}, 1000);
-
-	          	return score;
-	            	            
-	        }
-	    }).fetch();
-	 	
-
-
-	   
-	    /*var scores = _.map(_.groupBy(score, 'player_id'), function(score, key) {	    		
-		    	Meteor.call('getPlayer', {player_id: score[0].player_id}, function(err, player) {
-		    		
-		    		score.name = player[0].name;
-
-			    	score.score = player.length;
-			    	score.player_id = player[0]._id;
-			    	
-			    	
-
-		    	});
-		    	
-		    	return score;
-		    	score.name = score[0].name;
-
-		    	score.score = score.length;
-		    	//score.player_id = score[0].player_id;
-		    	return score;
-		    });*/
-	   
-	    setTimeout(function() {
-	    	 var scores = _.sortBy(
-		    	_.map(_.groupBy(score, 'player_id'), function(score, key) {
-			    	
-			    	
-
-			    	score.score = score.length;
-			    	score.player_id = score[0].player_id;
-			    	score.name = score[0].playerName;
-			    	console.log(score);
-			    	return score;
-			    }), 
-			    'score').reverse();
-
-	    	 console.log(scores);
-		    // Setup scorebar for each player
-		    playerGraph.init('#graph', ['rect', 'text'], scores);
-		    playerGraph.draw();
-		    playerGraph.drawText();
-
-
-		    // Group scores by type
-		    var overallScore = _.map(_.groupBy(score, 'type'), function(val, k) {
-	            var score = val.length;
-	            val = {};
-	            val.name = k;
-	            val.score = score;
-	            return val;
-	        });
-
-		    // Setup pie chart for whole game
-		    pieGraph.init('#pie', ['rect', 'text'], overallScore);
-		    pieGraph.draw();
-		    pieGraph.drawText();
-		}, 2000);
+    Meteor.subscribe("getGamePlayers", Session.get('gameId'));
+    Meteor.subscribe("GameData", Session.get('gameId'));
 }
 
+Template.scoreGraph.rendered = function() {
 
-   /* _.defer(function() {
-		Deps.autorun(function() {
-				
-		    var score = GameData.find({},{
-		        transform: function(score) {
-		            var player = Players.findOne({_id: score.player_id});
-		            if(player) {			          		            	
-			            score.playerName = player.name;                			                      
-		            }
-		            return score; 		           
-		        }
-		    }).fetch();
+	// Initialize pies
+	var awayPie = new PieGraph('#pieAway', ['rect', 'text'], 200, 200);	 
+	var homePie = new PieGraph('#pieHome', ['rect', 'text'], 200, 200);
+	
+    var self = this;
+	// Get scores and create graph
+	Meteor.call('getGameScore', {game_id: Session.get('gameId')}, function(err, scores) {
+		
+		if(err) {
+			throw new Meteor.Error( 500, 'There is something wrong with the Game Data' ); 
+		}
+		var playerScores = _.sortBy(scores,  'scores').reverse();
+	
+		Session.set('GameScores', scores);
 
-		    var scores = _.sortBy(
-		    	_.map(_.groupBy(score, 'player_id'), function(player, key) {
-			    	player.name = player[0].playerName;
-			    	player.score = player.length;
-			    	player.player_id = player[0].player_id;
-			    	return player;
-			    }), 
-			    'score').reverse();
+        self.observe();
+		// Create player graphs
+		playerGraph.init('#graph', ['rect', 'text'], playerScores);
+	    playerGraph.draw();  
+	   
+	    // Create Pie chart for ovarall score
+	    var overallHomeScore = lsFilters.getOverallGameScore(_.flatten(_.pluck(scores, 'scores')), 'home');
+		var overallAwayScore = lsFilters.getOverallGameScore(_.flatten(_.pluck(scores, 'scores')), 'away');	 		
+	    // Setup pie chart for game		    	   
+	    homePie.init(overallHomeScore);   	      
+	    awayPie.init(overallAwayScore);
 
-		    
-		    // Setup scorebar for each player
-		    playerGraph.init('#graph', ['rect', 'text'], scores);
-		    playerGraph.draw();
-		    playerGraph.drawText();
+	});
 
+    this.observe = function() {
+        // Observe score and update graph
+        GameData.find().observe({
+            added: function (score) {
 
-		    // Group scores by type
-		    var overallScore = _.map(_.groupBy(score, 'type'), function(val, k) {
-                var score = val.length;
-                val = {};
-                val.name = k;
-                val.score = score;
-                return val;
-            });
+                // Check if player exists
+                var player = _.where(Session.get('GameScores'), {_id: score.player_id});
 
-		    // Setup pie chart for whole game
-		    pieGraph.init('#pie', ['rect', 'text'], overallScore);
-		    pieGraph.draw();
-		    pieGraph.drawText();
+                if (player.length > 0) {
+                    // Add score
+                    var newScores = lsFilters.addGameScore(Session.get('GameScores'), score);
+                    Session.set('GameScores', newScores);
+                    playerGraph.update('#graph', ['rect', 'text'], _.sortBy(newScores, 'score').reverse());
+                } else {
+                    // add player
+                    Meteor.call('getPlayer', {player_id: score.player_id}, function (err, player) {
+                        var newScores = lsFilters.addPlayerWithScore(player, score, Session.get('GameScores'));
+                        Session.set('GameScores', newScores);
+                        playerGraph.update('#graph', ['rect', 'text'], _.sortBy(newScores, 'score').reverse());
+                    });
+                }
 
+                var overallHomeScore = lsFilters.getOverallGameScore(_.flatten(_.pluck(newScores, 'scores')), 'home');
+                var overallAwayScore = lsFilters.getOverallGameScore(_.flatten(_.pluck(newScores, 'scores')), 'away');
+                homePie.init(overallHomeScore);
+                awayPie.init(overallAwayScore);
 
-		});
-    });*/
+            }
+        });
+    }
 
 }
 

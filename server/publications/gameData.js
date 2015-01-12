@@ -12,8 +12,7 @@ Meteor.methods({
 	            if(player) {			          		            	
 		            score.playerName = player.name;                			                      
 	            }
-	            return score; 
-	            
+	            return score; 	            
 	        }
 	    });
 
@@ -29,17 +28,27 @@ Meteor.methods({
 		});
 	},
 	getGameScore: function(gameId) {
-		return gameId;
-		return Players.find({
-            game_id: gameId            
-        }, {
-            transform: function(player) {
-                var scores = GameData.find({game_id: gameId, player_id: player._id});
-                player.scores = scores;
+		// Synchronous way to put data in var score
+		var scores = Players.find(gameId, {
+            transform: function(player) {            	
+                var score = GameData.find({game_id: gameId.game_id, player_id: player._id}).fetch();
+                player.scores = score;
                 return player;
             }
-        });
-      
-		return scores;
+        }).fetch();
+		
+		var data = Meteor.call('formatScore', scores);
+		
+		return data;
+	},
+	formatScore: function(data) {
+		return _.map(_.groupBy(data, '_id'), function(player, key) {		    				   
+	    	if(typeof player[0].scores.length !== 'undefined' && player[0].scores.length > 0) {
+	    		player[0].score = player[0].scores.length;
+	    	} else {
+	    		player[0].score = 0;
+	    	}		 
+	    	return player[0];
+	    });
 	}
 });

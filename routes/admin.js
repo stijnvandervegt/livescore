@@ -14,6 +14,13 @@ Router.route('/admin/wedstrijd', function() {
 });
 Router.route('/admin/wedstrijd/:gameId', function() {
     // Edit game and add scores etc.
-    this.render('editGame',  {data: this.params.gameId});
+
+    this.render('editGame',  {
+        data: function () {
+            return {
+                id: this.params.gameId
+            };
+        }
+    });
 });
 

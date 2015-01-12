@@ -1,35 +1,24 @@
-Meteor.subscribe("getGames");
-Meteor.subscribe("getGamePlayers", this);
+Template.game.created = function() {
+    Meteor.subscribe("getGames");
+    Meteor.subscribe("getGamePlayers", this.data.id);
+    Meteor.subscribe('GameData', this.data.id);
 
+    Session.set('gameId', this.data.id);
+};
 
 Template.game.helpers({
     game: function() {
-       
-        //Session.set('scores', this.scores.fetch());             
-        Session.set('gameId', this.id);    	
-        return Games.findOne({_id: this.id});
+        return Games.findOne({_id: Session.get('gameId')});
     },
     score: function() {
-    	Meteor.subscribe('GameData', this.id);
 
-    	var homeScore = GameData.find({game_id: this.id, team: 'home'});
-    	
-        var awayScore = GameData.find({
-            game_id: this.id, 
-            team: 'away'
-        }, {
-            transform: function(score) {                
-                var player = Players.findOne({_id: score.player_id});
-                score.player = player;
-                return score;
-            }
-        });
+    	var homeScore = GameData.find({game_id:Session.get('gameId'), team: 'home'});
+
+        var awayScore = GameData.find({game_id: Session.get('gameId'), team: 'away'});
 
     	return {
     		homeTotal: homeScore.count(),
-    		home: homeScore.fetch(),
-    		awayTotal: awayScore.count(),
-    		away: awayScore.fetch()
+    		awayTotal: awayScore.count()
     	}
     }
 });
