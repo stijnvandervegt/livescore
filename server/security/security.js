@@ -1,8 +1,6 @@
 security = function() {
 	Games.allow({
 		update: function(userId, doc) {
-			console.log(userId);				
-			console.log(doc);
 	  		return doc && doc.user_id === userId;
 		},
 	  	remove: function(userId, doc) {
@@ -10,12 +8,21 @@ security = function() {
 		}
 	});
 
-	/*GameData.deny({
+	GameData.deny({
 		update: function(userId, doc) {			
-			return false;
+			return true;
 		},
 		insert: function(userId, doc) {			
-			return false;
+			return true;
 		}
-	});*/
+	});
+
+    Players.deny({
+        update: function() {
+            return true;
+        },
+        insert: function() {
+            return true;
+        }
+    });
 }

@@ -1,9 +1,13 @@
 
-	playerGraph = {			
-		svg: '',
-		path: '',
+    PlayerGraph = function(el, child) {
+
+        this.svg = d3.select(el);
+
+    }
+
+    PlayerGraph.prototype = {
 		init: function(el, child, data) {
-			this.svg = d3.select(el);
+
         	this.path = this.svg
             	.selectAll('rect')
             	.data(data);
@@ -118,26 +122,15 @@
 				.selectAll("text")
                 .data(this.pie(data)); 
 
-			var pathsUpdate = this.updatePath();
+			this.path = this.updatePath();
 
            	this.path
             	.enter()
             	.append('path');
 
-            var paths = this.updatePath();
-            		
-
-           	           	
     		this.path.data(this.pie(data));
 
-    		this.path.transition().duration(750).attrTween("d", arcTween);
-    		function arcTween(a) {
-			  var i = d3.interpolate(this._current, a);
-			  this._current = i(0);
-			  return function(t) {
-			    return self.arc(i(t));
-			  };
-			}
+            this.path = this.updatePath();
 
  			var textUpdate = this.updateText();
 

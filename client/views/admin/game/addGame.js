@@ -39,6 +39,7 @@ Template.addGame.events({
             date: event.target.date.value,
             user_id: Meteor.userId(),
             time: event.target.time.value,
+            twitter: event.target.twitter.value,
             status: 'publish'            
         };
         

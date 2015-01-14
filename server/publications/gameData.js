@@ -4,8 +4,6 @@ Meteor.publish('GameData', function(gameId) {
 
 Meteor.methods({
 	getScore: function(data) {
-		console.log(data);
-		console.log('test');
 		var score = GameData.find({game_id: data.game_id},{
 	        transform: function(score) {
 	            var player = Players.findOne({_id: score.player_id});

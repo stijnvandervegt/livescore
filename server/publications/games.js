@@ -15,6 +15,7 @@ Meteor.methods({
 				away_team: '',
 				date: '',
 				time: '',
+                twitter: '',
 				user_id: this.userId,
 				status: 'draft'
 			};
@@ -30,6 +31,7 @@ Meteor.methods({
             'away_team': data.away_team,
             'date': data.date,
             'time': data.time,
+            'twitter': data.twitter,
             'status': data.status
         }});
 

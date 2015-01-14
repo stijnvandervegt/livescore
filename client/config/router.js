@@ -1,4 +1,4 @@
 Router.configure({
-  layoutTemplate: 'frontendLayout',
+  layoutTemplate: 'defaultLayout',
   notFoundTemplate: 'notFound'
 });

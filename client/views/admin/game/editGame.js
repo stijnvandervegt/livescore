@@ -47,7 +47,6 @@ Template.editGame.events({
         data.user_id = Meteor.userId();
         data[name] = value;
         data['status'] = 'publish';
-        console.log(data);
         Meteor.call('updateGame', data);
 
         jQuery(event.currentTarget).closest('td').find('.text').toggleClass('hidden');

@@ -4,6 +4,7 @@ Template.game.created = function() {
     Meteor.subscribe('GameData', this.data.id);
 
     Session.set('gameId', this.data.id);
+
 };
 
 Template.game.helpers({

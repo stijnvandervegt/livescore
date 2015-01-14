@@ -1,18 +1,19 @@
 Template.scoreGraph.created = function() {
-    Meteor.subscribe("getGamePlayers", Session.get('gameId'));
-    Meteor.subscribe("GameData", Session.get('gameId'));
+    Meteor.subscribe("getGamePlayers", this.data.id);
+    Meteor.subscribe("GameData", this.data.id);
 }
 
 Template.scoreGraph.rendered = function() {
-
+    Session.set('GameScores', '');
 	// Initialize pies
 	var awayPie = new PieGraph('#pieAway', ['rect', 'text'], 200, 200);	 
 	var homePie = new PieGraph('#pieHome', ['rect', 'text'], 200, 200);
+    var playerGraph = new PlayerGraph('#graph');
 	
     var self = this;
 	// Get scores and create graph
-	Meteor.call('getGameScore', {game_id: Session.get('gameId')}, function(err, scores) {
-		
+	Meteor.call('getGameScore', {game_id: this.data.id}, function(err, scores) {
+
 		if(err) {
 			throw new Meteor.Error( 500, 'There is something wrong with the Game Data' ); 
 		}
@@ -22,8 +23,9 @@ Template.scoreGraph.rendered = function() {
 
         self.observe();
 		// Create player graphs
+
 		playerGraph.init('#graph', ['rect', 'text'], playerScores);
-	    playerGraph.draw();  
+	    playerGraph.draw(playerScores);
 	   
 	    // Create Pie chart for ovarall score
 	    var overallHomeScore = lsFilters.getOverallGameScore(_.flatten(_.pluck(scores, 'scores')), 'home');
@@ -36,12 +38,11 @@ Template.scoreGraph.rendered = function() {
 
     this.observe = function() {
         // Observe score and update graph
-        GameData.find().observe({
+        GameData.find({game_id: Session.get('gameId')}).observe({
             added: function (score) {
 
                 // Check if player exists
                 var player = _.where(Session.get('GameScores'), {_id: score.player_id});
-
                 if (player.length > 0) {
                     // Add score
                     var newScores = lsFilters.addGameScore(Session.get('GameScores'), score);
