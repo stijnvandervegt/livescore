@@ -1,8 +1,8 @@
-Livescore app met Meteor
+Realtime Livescore App (Meteor)
 =========
 ###Beschrijving
 
-Dit is een real time livescore web app gebouwd in Meteor. Met deze app kan iedereen een account aanmaken en inloggen. Een gebruiker die ingelogd is kan wedstrijden aanmaken en live scores doorgeven. Iedereen kan deze wedstrijd pagina met score statistieken bekijken. De ingelogde gebruiker kan alleen zijn eigen wedstrijden beheren. Waardoor je altijd een beheerder per pagina hebt. De applicatie is op dit moment gericht op korfbal, maar kan eigenlijk voor iedere sport waarbij scores worden bijgehouden ingezet worden.
+Dit is een real time livescore webapp gebouwd in Meteor. Met deze app kan iedereen een account aanmaken en inloggen. Een gebruiker die ingelogd is kan wedstrijden aanmaken en livescores doorgeven. Iedereen kan deze wedstrijd pagina met score statistieken bekijken. De ingelogde gebruiker kan alleen zijn eigen wedstrijden beheren waardoor je altijd één beheerder per pagina hebt. De applicatie is op dit moment gericht op korfbal, maar kan eigenlijk voor iedere sport waarbij scores worden bijgehouden ingezet worden.
 
 ###Folder structuur
 Voor de folder structuur heb ik inspiratie opgedaan van meteor-boilerplate. De package zelf heb ik niet gebruikt omdat ik dat voor deze applicatie geen toegevoegde waarde vind. 
