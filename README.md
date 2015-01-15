@@ -14,11 +14,10 @@ De documentatie van d3js vind je [hier](https://github.com/mbostock/d3/wiki)
 
 ### Methods and Calls
 De applicatie is verdeeld in client-side en server-side. Dat wil zeggen dat alle database calls server-side worden gemaakt. 
-Dit ter bevordering van de performance en veiligheid. De clientside roept calls naar de server aan die op zijn tijd weer data teruggeeft. De client kan gewoon doorgaan het uitvoeren van de overige code, zodra de data gereed is wordt het realtime geupdate. Meteor gebruikt hiervoor latency compensation. Bekijk [hier](https://meteorhacks.com/introduction-to-latency-compensation.html) een artikel voor meer informatie.
+Dit is ter bevordering van de performance en veiligheid. De client-side roept calls naar de server aan die de data ophaalt uit mongodb en het resultaat weer teruggeeft. De client kan doorgaan met het uitvoeren van de overige code, zodra de data gereed is wordt het realtime geupdate. Meteor gebruikt hiervoor latency compensation. Bekijk [hier](https://meteorhacks.com/introduction-to-latency-compensation.html) een artikel voor meer informatie deze methode.
 
 ### Reactivity
-Voor het updaten van de grafieken maak ik gebruik van reactivity. Telkens als er een score wordt toegevoegd dan houdt deze observe method het in de gaten en kun je in de added function de score toevoegen aan de grafiek. 
-
+Voor het updaten van de grafieken maak ik gebruik van reactivity. Telkens als er een score wordt toegevoegd dan houdt deze 'observe method' het in de gaten en kun je in de added function de score toevoegen aan de grafiek. Deze added function geeft alleen het toegevoegde object mee hierdoor hoef je niet telkens de hele search query uit te voeren.
 Voor meer informatie over observe kun je de documentatie van Meteor erbij pakken: [reactivity](http://docs.meteor.com/#/full/observe)
 ```
 observe({
@@ -28,7 +27,7 @@ observe({
 ```
 
 ###Filters
-Ik maak gebruik van underscore om objecten te filteren en naar het juiste formaat te reduceren. Deze filters heb ik in een onder de helpers in een object gezet zodat deze overal aan kunt geroepen kunnen worden. [undescorejs](http://underscorejs.org/) 
+Ik maak gebruik van underscore om objecten te filteren en naar het juiste formaat te reduceren. Deze filters heb ik onder de helpers in een object gezet zodat deze overal aan geroepen kunnen worden. [undescorejs](http://underscorejs.org/) 
 
 ###Bronnen
 * Book: Discover Meteor
@@ -49,7 +48,7 @@ Ik maak gebruik van underscore om objecten te filteren en naar het juiste formaa
 * superstringsoft:observatory  0.4.8  Versatile and powerful logging and applic...
 
 ###Vervolg stappen
-Op dit moment verkeerd de applicatie in een prototype versie. Om er een goede professionele applicatie van te maken zijn de nodige stappen nodig. Hierdonder vind je een paar stappen die ik in de toekomst kan nemen om de applicatie beter te maken. 
+Op dit moment verkeerd de applicatie in een prototype versie. Om er een goede professionele applicatie van te maken zijn er nog een aantal stappen nodig. Hierdonder vind je een paar stappen die ik in de toekomst kan nemen om de applicatie beter te optimaliseren. 
 * [Kadira monitor](https://ui.kadira.io/sign-in): Dit is een mooie tool om je applicatie te monitoren. Hierdoor kun je gericht stappen nemen om de perfomance van applicatie te optimalisren.
 * [Bulletproof Meteor](https://bulletproofmeteor.com/basics/introduction): Op deze website vind je erg veel uitleg om je meteor applicatie te optimaliseren. 
 * Naast performance moet de applicatie ook nog vormgegeven worden. Op dit moment wordt bootstrap gebruikt. 
