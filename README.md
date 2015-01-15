@@ -27,8 +27,6 @@ observe({
 });
 ```
 
-
-
 ###Bronnen
 * Book: Discover Meteor
 * Web: http://meteor.com
@@ -49,8 +47,8 @@ observe({
 
 ###Vervolg stappen
 Op dit moment verkeerd de applicatie in een prototype versie. Om er een goede professionele applicatie van te maken zijn de nodige stappen nodig. Hierdonder vind je een paar stappen die ik in de toekomst kan nemen om de applicatie beter te maken. 
-* Kadira monitor: Dit is een mooie tool om je applicatie te monitoren. Hierdoor kun je gericht stappen nemen om de perfomance van applicatie te optimalisren.
-* Bulletproof Meteor: Op deze website vind je erg veel uitleg om je meteor applicatie te optimaliseren. 
+* [Kadira monitor](https://ui.kadira.io/sign-in): Dit is een mooie tool om je applicatie te monitoren. Hierdoor kun je gericht stappen nemen om de perfomance van applicatie te optimalisren.
+* [Bulletproof Meteor](https://bulletproofmeteor.com/basics/introduction): Op deze website vind je erg veel uitleg om je meteor applicatie te optimaliseren. 
 
 * Naast performance moet de applicatie ook nog vormgegeven worden. Op dit moment wordt bootstrap gebruikt. 
-* Naast het toevoegen van scores moet het ook mogelijk zijn om andere gebeurtenissen toe te voegen zoals bijvoorbeeld wissels, kaarten en timeouts. Een andere mooie toevoegen zou de tijd bij elke gebeurtenis zijn zodat je dit ook in de statistieken naar voren kunt brengen.
+* Een andere toevoeging zou kunnen zijn dat het ook mogelijk is om andere gebeurtenissen toe te voegen zoals bijvoorbeeld wissels, kaarten en timeouts. Daarnaast zou de tijd bij elke gebeurtenis toegevoegd kunnen worden zodat dit ook in de statistieken naar voren gebracht kan worden.
