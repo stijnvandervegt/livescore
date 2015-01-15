@@ -1,3 +1,3 @@
 Meteor.startup(function () {
-	security();
+	security.init();
 });
